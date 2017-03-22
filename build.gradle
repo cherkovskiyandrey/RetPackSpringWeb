@@ -1,0 +1,56 @@
+group 'ru.sbrf'
+version '1.0-SNAPSHOT'
+
+buildscript {
+    repositories {
+        mavenCentral()
+        jcenter()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.4.2.RELEASE")
+        classpath "io.ratpack:ratpack-gradle:1.4.5"
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.ratpack.ratpack-java'
+
+//jar {
+//    baseName = 'RetPackWeb'
+//    version =  '0.1.0'
+//    //rename('(.*)(/static/.*)', '$2')
+//    //rename('BOOT-INF/classes/static/index.html', 'index.html')
+//}
+//
+bootRepackage {
+    mainClass = 'ru.sbrf.Server'
+}
+
+//-----------
+task clientJar(type: Jar) {
+    appendix = 'client'
+    from sourceSets.main.output
+    //into('**/*index*')
+    into("aaa/")
+}
+
+
+bootRepackage {
+    withJarTask = clientJar
+}.dependsOn(clientJar)
+//-----------
+
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+    jcenter()
+}
+
+dependencies {
+    compile("org.springframework.boot:spring-boot-starter")
+    compile("io.ratpack:ratpack-spring-boot:1.4.5")
+}
